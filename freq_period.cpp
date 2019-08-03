@@ -17,7 +17,7 @@ void frequency_meas(){
     TimerIntClear(TIMER1_BASE, TimerIntStatus(TIMER1_BASE, true));
     static uint32_t val2 = 0;
     uint32_t val1 = val2;
-    val2 = TimerValueGet(TIMER0_BASE, TIMER_A); // Como o período de contagem é de 1 seg o número de bordas é igual a frequência
+    val2 = TimerValueGet(TIMER0_BASE, TIMER_A); 
     edges = val1-val2;
     edges&=0x00FFFFFF;
 }
@@ -65,21 +65,21 @@ int main(void)
     TimerClockSourceSet(TIMER1_BASE, TIMER_CLOCK_SYSTEM);
     TimerClockSourceSet(TIMER2_BASE, TIMER_CLOCK_SYSTEM);
 
-    TimerPrescaleSet (TIMER0_BASE, TIMER_A, 0x00FF);  // Não funciona sem
+    TimerPrescaleSet (TIMER0_BASE, TIMER_A, 0x00FF);  
     TimerLoadSet(TIMER0_BASE, TIMER_A, 0XFFFF);
     TimerPrescaleMatchSet(TIMER0_BASE, TIMER_A, 0);
     TimerMatchSet(TIMER0_BASE, TIMER_A, 0x00);
 
     TimerLoadSet(TIMER1_BASE, TIMER_A, g_ui32SysClock);    // Contagem de 1 segundo
 
-    TimerPrescaleSet (TIMER2_BASE, TIMER_A, 0x00FF);  // Não funciona sem
+    TimerPrescaleSet (TIMER2_BASE, TIMER_A, 0x00FF);  
     TimerLoadSet(TIMER2_BASE, TIMER_A, 0XFFFF);
     TimerPrescaleMatchSet(TIMER2_BASE, TIMER_A, 0);
     TimerMatchSet(TIMER2_BASE, TIMER_A, 0x00);
 
-    TimerConfigure(TIMER0_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_CAP_COUNT); // Será utilizado pra contar as bordas
-    TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);                           // Irá gerar interrupção para frequencímetro
-    TimerConfigure(TIMER2_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_CAP_TIME);  // Usado no periodimetro
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_CAP_COUNT); 
+    TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);                           
+    TimerConfigure(TIMER2_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_CAP_TIME);  
 
     TimerControlEvent(TIMER0_BASE, TIMER_A, TIMER_EVENT_POS_EDGE);
     TimerControlEvent(TIMER2_BASE, TIMER_A, TIMER_EVENT_POS_EDGE);
@@ -95,7 +95,7 @@ int main(void)
     TimerEnable (TIMER2_BASE, TIMER_A);
 
     while (1) {
-        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6, GPIO_PIN_6);  // Usado p/ teste
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6, GPIO_PIN_6);  
         SysCtlDelay(24000);
         GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6, 0);
         SysCtlDelay(24000);
